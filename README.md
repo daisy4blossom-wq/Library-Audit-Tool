@@ -1,37 +1,52 @@
-# Automated Library Audit & Alert System
+Library Audit Tool & Management CLI
 
-A robust, object-oriented Python backend tool designed to manage library inventory databases, track stock thresholds, and safely generate low-stock alerts. Built with a focus on production-grade software engineering standards, security, and defensive programming.
+A professional, database-driven CLI application for auditing, tracking, and managing library inventory, member registrations, and loan operations. 
 
-## Key Features
+Originally built using SQLite, this tool has been upgraded to **PostgreSQL** to leverage enterprise-grade relational database management and Role-Based Access Control and Restrictions enforced directly at the database engine level.
 
-- **Repository Pattern Architecture:** Encapsulates raw database operations inside a dedicated `LibraryAudit` class for clean separation of concerns.
-- **Custom Exception Hierarchy:** Replaces raw SQLite crashes with domain-specific exceptions (`DatabaseConnectionError`, `AuditExceptionError`) for predictable error handling.
-- **SQL Injection Prevention:** Utilizes parameterized queries (`?` placeholders) across all dynamic database interactions.
-- **Input Validation:** Enforces type safety and non-negative integer boundaries before executing query operations.
-- **Resource Management:** Ensures proper lifecycle management of database connections and cursors to prevent connection leaks.
+---
+Key Features
 
-# Tech Stack
+*Database Engine Migration: Upgraded from SQLite (`books.db`) to PostgreSQL (`library`) for improved concurrency, data integrity, and performance.
+*Database-Level Authorization: Replaced manual application permission logic with native PostgreSQL roles (`admin`, `Manager`, `user`) managed via pgAdmin/SQL.
+*Modular Codebase: Architected with clear separation of concerns between database interaction logic, application controllers, and CLI presentation.
 
-- **Language:** Python 3.x
-- **Database:** SQLite3
+---
 
-# Database Schema
+## 🛠️ Tech Stack & Dependencies
 
-The application operates on the `mini_library` table:
+*Language: Python 3.10+
+*Database Engine: PostgreSQL 15+
+*Database Driver: `psycopg2`
+*Database GUI: pgAdmin 4
 
-| Column | Type | Description |
-| :--- | :--- | :--- |
-| `id` | INTEGER | Primary Key |
-| `title` | TEXT | Book Title |
-| `available_copies` | INTEGER | Current stock count |
+---
 
+## System Architecture & Security
 
+This project delegates user authorization directly to PostgreSQL:
 
-### Prerequisites
-- Python 3.8+ installed on your system.
+1. Role-Based Access Control (RBAC): User privileges are enforced by PostgreSQL roles configured via SQL/pgAdmin rather than hardcoded Python dictionaries.
+2. **Graceful Exception Handling**: Unauthorised database operations trigger exceptions, which the application catches and surfaces cleanly to the user.
 
-### Setup & Run
-1. Clone the repository:
-   ```bash
-   git clone [https://github.com/your-username/library-audit-tool.git](https://github.com/your-username/library-audit-tool.git)
-   cd library-audit-tool
+---
+
+Prerequisites
+
+* Python 3.10 or higher installed.
+* PostgreSQL installed and running locally on port `5432`.
+* pgAdmin or `psql` shell access.
+
+Repository Setup
+
+```bash
+# Clone the repository
+git clone [https://github.com/your-username/library-audit-tool.git](https://github.com/your-username/library-audit-tool.git)
+cd library-audit-tool
+
+# Create and activate a virtual environment (optional but recommended)
+python -m venv venv
+# On Windows:
+venv\Scripts\activate
+# On Mac/Linux:
+source venv/bin/activate
